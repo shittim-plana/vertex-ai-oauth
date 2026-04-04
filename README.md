@@ -132,4 +132,5 @@ console.log(text);
 
 ## License
 
-[MIT](./LICENSE) © 2026 shittim-plana
+[Custom License](./LICENSE) © 2026 shittim-plana  
+Commercial use requires prior permission. See [LICENSE](./LICENSE) for details.
