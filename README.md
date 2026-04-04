@@ -1,6 +1,10 @@
 # vertex-ai-oauth
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[
+
+![License: Custom](https://img.shields.io/badge/License-Custom-blue.svg)
+
+](./LICENSE)
 
 OAuth 2.0 utility for Vertex AI Gemini — browser & Node.js, **no service account required**.
 
