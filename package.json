@@ -1,0 +1,29 @@
+{
+  "name": "vertex-ai-oauth",
+  "version": "0.1.0",
+  "description": "OAuth 2.0 utility for Vertex AI Gemini — browser & Node.js, no service account required",
+  "main": "lib/vertex-ai-oauth.js",
+  "browser": "lib/vertex-ai-oauth.browser.js",
+  "files": [
+    "lib/"
+  ],
+  "keywords": [
+    "vertex-ai",
+    "oauth2",
+    "google-cloud",
+    "gemini",
+    "gcp",
+    "gis",
+    "google-identity-services",
+    "browser",
+    "nodejs",
+    "streaming"
+  ],
+  "author": "shittim-plana",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shittim-plana/vertex-ai-oauth.git"
+  },
+  "homepage": "https://github.com/shittim-plana/vertex-ai-oauth"
+}
