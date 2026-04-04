@@ -1,6 +1,7 @@
 # vertex-ai-oauth
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![License: Custom](https://img.shields.io/badge/License-Custom-blue.svg)
+](./LICENSE)
 
 Vertex AI Gemini용 OAuth 2.0 유틸리티 — 브라우저 & Node.js, **서비스 계정 불필요**.
 
