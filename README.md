@@ -148,7 +148,7 @@ Commercial use requires prior permission. See [LICENSE](./LICENSE) for details.
 
 <a name="korean"></a>
 
-# vertex-ai-oauth
+# vertex-ai-oauth (KR)
 
 [![License: Custom](https://img.shields.io/badge/License-Custom-blue.svg)
 ](./LICENSE)
