@@ -20,7 +20,7 @@
     "streaming"
   ],
   "author": "shittim-plana",
-  "license": "MIT",
+  "license": "custom",
   "repository": {
     "type": "git",
     "url": "https://github.com/shittim-plana/vertex-ai-oauth.git"
