@@ -129,6 +129,16 @@ console.log(text);
 
 ---
 
+## Next.js + PostgreSQL Integration
+
+For server-side applications using Next.js API Routes with PostgreSQL token storage, see the dedicated guide:
+
+**[Next.js + PostgreSQL Integration Guide](docs/integration-nextjs-postgresql.md)**
+
+This pattern stores OAuth tokens in a PostgreSQL table (`vertex_ai_connections`) instead of `localStorage`, manages token refresh server-side, and exposes a status API for the client UI. All API costs are billed to the user's own GCP project.
+
+---
+
 ## Security Notes
 
 - The OAuth access token is stored in `localStorage` as plaintext
@@ -267,6 +277,16 @@ console.log(text);
    - 승인된 JavaScript 출처: 사용할 도메인 (예: `https://yourdomain.github.io`)
 5. **클라이언트 ID** 복사 → `VertexAIOAuth({ clientId: '...' })`에 입력
 6. 사용할 Google 계정에 해당 프로젝트의 `roles/aiplatform.user` IAM 역할 부여
+
+---
+
+## Next.js + PostgreSQL 통합
+
+Next.js API Route와 PostgreSQL 토큰 저장소를 사용하는 서버 사이드 통합 가이드:
+
+**[Next.js + PostgreSQL 통합 가이드](docs/integration-nextjs-postgresql.md)**
+
+이 패턴은 OAuth 토큰을 `localStorage` 대신 PostgreSQL 테이블(`vertex_ai_connections`)에 저장하고, 서버 사이드에서 토큰 갱신을 관리하며, 클라이언트 UI용 상태 조회 API를 제공합니다. 모든 API 비용은 유저 자신의 GCP 프로젝트에 청구됩니다.
 
 ---
 
