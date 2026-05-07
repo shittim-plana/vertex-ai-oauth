@@ -45,6 +45,7 @@ This library uses **Google Identity Services (GIS)** to authenticate the end-use
 | `lib/vertex-ai-oauth.js` | Universal — browser + Node.js. Supports `getToken`, `refreshToken`, custom storage. |
 | `lib/vertex-ai-oauth.browser.js` | Browser-only lightweight version. GIS + localStorage only. |
 | `lib/vertex-ai-oauth-server.js` | Server-only. Authorization Code Flow, token refresh/revoke, GCP project listing. |
+| `lib/vertex-ai-oauth-postgresql.js` | Server-only. PostgreSQL token storage with auto-refresh. For Next.js/Express backends. |
 
 Use `vertex-ai-oauth.browser.js` for plain HTML pages.
 Use `vertex-ai-oauth.js` for bundled apps or Node.js.
@@ -129,13 +130,61 @@ console.log(text);
 
 ---
 
-## Next.js + PostgreSQL Integration
+## PostgreSQL Token Storage
 
-For server-side applications using Next.js API Routes with PostgreSQL token storage, see the dedicated guide:
+For server-side apps (Next.js, Express, etc.) that use PostgreSQL instead of localStorage:
 
-**[Next.js + PostgreSQL Integration Guide](docs/integration-nextjs-postgresql.md)**
+```sql
+CREATE TABLE vertex_ai_connections (
+  user_id VARCHAR(255) PRIMARY KEY,
+  refresh_token TEXT NOT NULL,
+  access_token TEXT,
+  token_expires_at BIGINT NOT NULL,
+  gcp_project_id VARCHAR(255) NOT NULL,
+  region VARCHAR(50) DEFAULT 'global',
+  scope TEXT,
+  enabled BOOLEAN DEFAULT true,
+  connected_at BIGINT NOT NULL,
+  updated_at BIGINT NOT NULL
+);
+```
 
-This pattern stores OAuth tokens in a PostgreSQL table (`vertex_ai_connections`) instead of `localStorage`, manages token refresh server-side, and exposes a status API for the client UI. All API costs are billed to the user's own GCP project.
+```javascript
+const { createTokenManager } = require('./lib/vertex-ai-oauth-postgresql');
+const { Pool } = require('pg');
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const query = (text, params) => pool.query(text, params);
+
+const manager = createTokenManager({
+  query,
+  clientId: process.env.GCP_OAUTH_CLIENT_ID,
+  clientSecret: process.env.GCP_OAUTH_CLIENT_SECRET,
+});
+
+// Get credentials (auto-refreshes if expired)
+const creds = await manager.getValidCredentials(userId);
+// → { accessToken, projectId, region } or null
+
+// Store tokens after OAuth callback
+await manager.storeTokens({
+  uid: userId,
+  refreshToken: tokens.refresh_token,
+  accessToken: tokens.access_token,
+  expiresIn: tokens.expires_in,
+  projectId: 'my-gcp-project',
+  region: 'global',
+});
+
+// Get status for UI (tokens never exposed)
+const status = await manager.getStatus(userId);
+// → { connected: true, minutesLeft: 42 }
+
+// Disconnect (revoke + delete)
+await manager.disconnect(userId);
+```
+
+Tokens are stored as plaintext in PostgreSQL (server-side only, never sent to client). All API costs are billed to the user's own GCP project.
 
 ---
 
@@ -196,6 +245,7 @@ Vertex AI Gemini용 OAuth 2.0 유틸리티 — 브라우저 & Node.js, **서비�
 | `lib/vertex-ai-oauth.js` | 유니버설 — 브라우저 + Node.js. `getToken`, `refreshToken`, 커스텀 스토리지 지원. |
 | `lib/vertex-ai-oauth.browser.js` | 브라우저 전용 경량 버전. GIS + localStorage만 사용. |
 | `lib/vertex-ai-oauth-server.js` | 서버 전용. Authorization Code Flow, 토큰 갱신/폐기, GCP 프로젝트 목록 조회. |
+| `lib/vertex-ai-oauth-postgresql.js` | 서버 전용. PostgreSQL 토큰 저장 + 자동 갱신. Next.js/Express 백엔드용. |
 
 순수 HTML 페이지에는 `vertex-ai-oauth.browser.js`를 사용하세요.
 번들 앱이나 Node.js 환경에는 `vertex-ai-oauth.js`를 사용하세요.
@@ -280,13 +330,61 @@ console.log(text);
 
 ---
 
-## Next.js + PostgreSQL 통합
+## PostgreSQL 토큰 저장
 
-Next.js API Route와 PostgreSQL 토큰 저장소를 사용하는 서버 사이드 통합 가이드:
+서버 사이드 앱(Next.js, Express 등)에서 localStorage 대신 PostgreSQL을 사용할 때:
 
-**[Next.js + PostgreSQL 통합 가이드](docs/integration-nextjs-postgresql.md)**
+```sql
+CREATE TABLE vertex_ai_connections (
+  user_id VARCHAR(255) PRIMARY KEY,
+  refresh_token TEXT NOT NULL,
+  access_token TEXT,
+  token_expires_at BIGINT NOT NULL,
+  gcp_project_id VARCHAR(255) NOT NULL,
+  region VARCHAR(50) DEFAULT 'global',
+  scope TEXT,
+  enabled BOOLEAN DEFAULT true,
+  connected_at BIGINT NOT NULL,
+  updated_at BIGINT NOT NULL
+);
+```
 
-이 패턴은 OAuth 토큰을 `localStorage` 대신 PostgreSQL 테이블(`vertex_ai_connections`)에 저장하고, 서버 사이드에서 토큰 갱신을 관리하며, 클라이언트 UI용 상태 조회 API를 제공합니다. 모든 API 비용은 유저 자신의 GCP 프로젝트에 청구됩니다.
+```javascript
+const { createTokenManager } = require('./lib/vertex-ai-oauth-postgresql');
+const { Pool } = require('pg');
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const query = (text, params) => pool.query(text, params);
+
+const manager = createTokenManager({
+  query,
+  clientId: process.env.GCP_OAUTH_CLIENT_ID,
+  clientSecret: process.env.GCP_OAUTH_CLIENT_SECRET,
+});
+
+// 크레덴셜 조회 (만료 시 자동 갱신)
+const creds = await manager.getValidCredentials(userId);
+// → { accessToken, projectId, region } 또는 null
+
+// OAuth 콜백 후 토큰 저장
+await manager.storeTokens({
+  uid: userId,
+  refreshToken: tokens.refresh_token,
+  accessToken: tokens.access_token,
+  expiresIn: tokens.expires_in,
+  projectId: 'my-gcp-project',
+  region: 'global',
+});
+
+// UI용 상태 조회 (토큰 미노출)
+const status = await manager.getStatus(userId);
+// → { connected: true, minutesLeft: 42 }
+
+// 연결 해제 (Google 폐기 + DB 삭제)
+await manager.disconnect(userId);
+```
+
+토큰은 PostgreSQL에 평문 저장 (서버 전용, 클라이언트 미노출). 모든 API 비용은 유저 자신의 GCP 프로젝트에 청구됩니다.
 
 ---
 

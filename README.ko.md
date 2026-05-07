@@ -35,6 +35,8 @@ Vertex AI Gemini용 OAuth 2.0 유틸리티 — 브라우저 & Node.js, **서비�
 |---|---|
 | `lib/vertex-ai-oauth.js` | 유니버설 — 브라우저 + Node.js. `getToken`, `refreshToken`, 커스텀 스토리지 지원. |
 | `lib/vertex-ai-oauth.browser.js` | 브라우저 전용 경량 버전. GIS + localStorage만 사용. |
+| `lib/vertex-ai-oauth-server.js` | 서버 전용. Authorization Code Flow, 토큰 갱신/폐기, GCP 프로젝트 목록 조회. |
+| `lib/vertex-ai-oauth-postgresql.js` | 서버 전용. PostgreSQL 토큰 저장 + 자동 갱신. Next.js/Express 백엔드용. |
 
 순수 HTML 페이지에는 `vertex-ai-oauth.browser.js`를 사용하세요.
 번들 앱이나 Node.js 환경에는 `vertex-ai-oauth.js`를 사용하세요.
@@ -116,6 +118,59 @@ console.log(text);
    - 승인된 JavaScript 출처: 사용할 도메인 (예: `https://yourdomain.github.io`)
 5. **클라이언트 ID** 복사 → `VertexAIOAuth({ clientId: '...' })`에 입력
 6. 사용할 Google 계정에 해당 프로젝트의 `roles/aiplatform.user` IAM 역할 부여
+
+---
+
+## PostgreSQL 토큰 저장
+
+서버 사이드 앱(Next.js, Express 등)에서 localStorage 대신 PostgreSQL을 사용할 때:
+
+```sql
+CREATE TABLE vertex_ai_connections (
+  user_id VARCHAR(255) PRIMARY KEY,
+  refresh_token TEXT NOT NULL,
+  access_token TEXT,
+  token_expires_at BIGINT NOT NULL,
+  gcp_project_id VARCHAR(255) NOT NULL,
+  region VARCHAR(50) DEFAULT 'global',
+  scope TEXT,
+  enabled BOOLEAN DEFAULT true,
+  connected_at BIGINT NOT NULL,
+  updated_at BIGINT NOT NULL
+);
+```
+
+```javascript
+const { createTokenManager } = require('./lib/vertex-ai-oauth-postgresql');
+const { Pool } = require('pg');
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const query = (text, params) => pool.query(text, params);
+
+const manager = createTokenManager({
+  query,
+  clientId: process.env.GCP_OAUTH_CLIENT_ID,
+  clientSecret: process.env.GCP_OAUTH_CLIENT_SECRET,
+});
+
+// 크레덴셜 조회 (만료 시 자동 갱신)
+const creds = await manager.getValidCredentials(userId);
+// → { accessToken, projectId, region } 또는 null
+
+// OAuth 콜백 후 토큰 저장
+await manager.storeTokens({
+  uid: userId, refreshToken, accessToken, expiresIn, projectId, region,
+});
+
+// UI용 상태 조회 (토큰 미노출)
+const status = await manager.getStatus(userId);
+// → { connected: true, minutesLeft: 42 }
+
+// 연결 해제 (Google 폐기 + DB 삭제)
+await manager.disconnect(userId);
+```
+
+토큰은 PostgreSQL에 평문 저장 (서버 전용, 클라이언트 미노출). 모든 API 비용은 유저 자신의 GCP 프로젝트에 청구됩니다.
 
 ---
 
