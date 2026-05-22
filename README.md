@@ -22,7 +22,7 @@ Every existing Vertex AI integration requires a service account JSON key. That m
 
 This library uses **Google Identity Services (GIS)** to authenticate the end-user directly in the browser via OAuth 2.0. No service account. No backend credential storage. Just a GCP Project ID and a Google login.
 
-> As far as publicly known, no prior open-source implementation exists that uses a user-side GIS OAuth flow to call the raw Vertex AI `streamGenerateContent` endpoint directly from a browser-side chat interface without any service account.
+> Uses a browser-side GIS OAuth flow to call the Vertex AI `streamGenerateContent` endpoint directly, without any service account.
 
 ---
 
@@ -222,7 +222,7 @@ Vertex AI Gemini용 OAuth 2.0 유틸리티 — 브라우저 & Node.js, **서비�
 
 이 라이브러리는 **Google Identity Services(GIS)** 를 사용해 브라우저에서 직접 OAuth 2.0으로 인증합니다. 서비스 계정 없음. 백엔드 자격증명 저장 없음. GCP 프로젝트 ID와 Google 로그인만 있으면 됩니다.
 
-> 공개된 자료 기준으로, 브라우저 사이드 GIS OAuth flow를 사용해 서비스 계정 없이 Vertex AI `streamGenerateContent` 엔드포인트를 직접 호출하는 채팅 인터페이스의 선행 오픈소스 구현은 확인되지 않았습니다.
+> 브라우저에서 GIS OAuth flow로 Vertex AI `streamGenerateContent` 엔드포인트를 직접 호출합니다. 서비스 계정이 필요 없습니다.
 
 ---
 
