@@ -13,7 +13,7 @@ Vertex AI Gemini용 OAuth 2.0 유틸리티 — 브라우저 & Node.js, **서비�
 
 이 라이브러리는 **Google Identity Services(GIS)** 를 사용해 브라우저에서 직접 OAuth 2.0으로 인증합니다. 서비스 계정 없음. 백엔드 자격증명 저장 없음. GCP 프로젝트 ID와 Google 로그인만 있으면 됩니다.
 
-> 브라우저에서 GIS OAuth flow로 Vertex AI `streamGenerateContent` 엔드포인트를 직접 호출합니다. 서비스 계정이 필요 없습니다.
+> 브라우저 사이드 GIS OAuth로 Vertex AI `streamGenerateContent`를 직접 호출하는, 아마도 최초의 오픈소스 구현.
 
 ---
 

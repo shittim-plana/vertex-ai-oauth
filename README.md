@@ -22,7 +22,7 @@ Every existing Vertex AI integration requires a service account JSON key. That m
 
 This library uses **Google Identity Services (GIS)** to authenticate the end-user directly in the browser via OAuth 2.0. No service account. No backend credential storage. Just a GCP Project ID and a Google login.
 
-> Uses a browser-side GIS OAuth flow to call the Vertex AI `streamGenerateContent` endpoint directly, without any service account.
+> Possibly the first open-source implementation of a browser-side GIS OAuth flow calling Vertex AI `streamGenerateContent` directly, without any service account.
 
 ---
 
