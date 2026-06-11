@@ -3,17 +3,17 @@
 [![License: Custom](https://img.shields.io/badge/License-Custom-blue.svg)
 ](./LICENSE)
 
-Vertex AI Gemini용 OAuth 2.0 유틸리티 — 브라우저 & Node.js, **서비스 계정 불필요**.
+Agent Platform(구 Vertex AI)용 OAuth 2.0 유틸리티 — **서비스 계정 불필요**.
 
 ---
 
 ## 왜 만들었나
 
-기존 Vertex AI 연동 방식은 거의 전부 서비스 계정 JSON 키를 요구합니다. 키 유출 위험, 교체 부담, 그리고 비개발자가 따라가기 어려운 설정 과정이 문제입니다.
+기존 Agent Platform(구 Vertex AI) 연동 방식은 거의 전부 서비스 계정 JSON 키를 요구합니다. 키 유출 위험, 교체 부담, 그리고 비개발자가 따라가기 어려운 설정 과정이 문제입니다.
 
 이 라이브러리는 **Google Identity Services(GIS)** 를 사용해 브라우저에서 직접 OAuth 2.0으로 인증합니다. 서비스 계정 없음. 백엔드 자격증명 저장 없음. GCP 프로젝트 ID와 Google 로그인만 있으면 됩니다.
 
-> 브라우저 사이드 GIS OAuth로 Vertex AI `streamGenerateContent`를 직접 호출하는, 아마도 최초의 오픈소스 구현.
+> 브라우저 사이드 GIS OAuth로 Agent Platform의 `streamGenerateContent`를 직접 호출하는, 아마도 최초의 오픈소스 구현.
 
 ---
 
@@ -109,7 +109,7 @@ console.log(text);
 ## GCP 설정 방법
 
 1. [Google Cloud Console](https://console.cloud.google.com/) 접속
-2. 프로젝트에서 **Vertex AI API** 사용 설정
+2. 프로젝트에서 **Agent Platform API** 사용 설정
 3. **API 및 서비스 → OAuth 동의 화면** 설정
    - 사용자 유형: 외부(External)
    - 테스트 사용자에 본인 이메일 추가
