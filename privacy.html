@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — pisces-ai-oauth</title>
+<meta name="description" content="Privacy policy for the pisces-ai-oauth open-source library and its informational website.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#070b14;--surface:#0c1220;--border:#182238;
+  --ink:#e8f0ff;--mid:#a0b4d0;--muted:#6b83a8;--dim:#4a5e7a;
+  --c1:#22d3ee;--c2:#3b82f6;--accent:#2dd4bf;
+}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  background:var(--bg);color:var(--mid);line-height:1.7}
+.wrap{max-width:760px;margin:0 auto;padding:1.5rem}
+header.top{padding:1.4rem 0;border-bottom:1px solid var(--border)}
+.brand{display:inline-flex;align-items:center;gap:.55rem;text-decoration:none;font-weight:700;font-size:1rem}
+.brand .mark{width:1.1rem;height:1.1rem;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,var(--c1),var(--c2))}
+.brand .p1{background:linear-gradient(90deg,var(--c1),var(--c2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand .p2{color:var(--mid)}
+.brand .p3{color:var(--muted)}
+main{padding:2.5rem 0 1rem}
+h1{color:var(--ink);font-size:2rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.4rem}
+h2{color:var(--ink);font-size:1.15rem;font-weight:700;margin:2rem 0 .6rem}
+p{margin-bottom:.9rem}
+a{color:var(--c1)}
+footer.foot{padding:1.8rem 0;border-top:1px solid var(--border);text-align:center;font-size:.78rem;color:var(--dim);margin-top:2.5rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="brand" href="/"><span class="mark"></span><span class="p1">pisces</span><span class="p2">-ai-</span><span class="p3">oauth</span></a>
+</header>
+<main>
+<h1>Privacy Policy</h1>
+
+<section>
+<h2>Overview</h2>
+<p>pisces-ai-oauth is an open-source OAuth 2.0 utility library for Google Agent Platform (formerly Vertex AI). This website is a static informational page for the library.</p>
+</section>
+
+<section>
+<h2>Data Collection</h2>
+<p>This website collects no personal data: no analytics, no cookies, no tracking, and no server-side logging under our control. The library itself runs entirely in the user's own environment.</p>
+</section>
+
+<section>
+<h2>OAuth Tokens</h2>
+<p>When the library is used, Google OAuth tokens are stored only on the user's side: in the browser's localStorage (browser build) or in the user's own PostgreSQL database (server build). Tokens are never transmitted to, or stored on, any server operated by this project.</p>
+</section>
+
+<section>
+<h2>Google Sign-In</h2>
+<p>Authentication is performed directly between the user and Google via Google Identity Services. Google's handling of data is governed by <a href="https://policies.google.com/privacy">Google's Privacy Policy</a>.</p>
+</section>
+
+<section>
+<h2>Third-Party Hosting</h2>
+<p>This site is hosted on Vercel; Vercel may collect standard access logs per its own privacy policy.</p>
+</section>
+
+<section>
+<h2>Open Source</h2>
+<p>Source code is publicly available at <a href="https://github.com/shittim-plana/vertex-ai-oauth">github.com/shittim-plana/vertex-ai-oauth</a>.</p>
+</section>
+
+<section>
+<h2>Contact</h2>
+<p>Questions can be raised via <a href="https://github.com/shittim-plana/vertex-ai-oauth/issues">GitHub Issues</a>.</p>
+</section>
+</main>
+<footer class="foot">Last updated: 2026-06-12</footer>
+</div>
+</body>
+</html>

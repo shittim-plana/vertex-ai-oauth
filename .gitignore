@@ -1,0 +1,8 @@
+# Claude Code
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+# local junk
+.DS_Store
+*.log
+node_modules/
