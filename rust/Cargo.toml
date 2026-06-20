@@ -1,0 +1,20 @@
+[package]
+name = "vertex-ai-oauth"
+version = "0.2.0"
+edition = "2021"
+description = "OAuth 2.0 + PKCE for Google Cloud / Vertex AI — no service account required"
+license = "Custom"
+repository = "https://github.com/shittim-plana/vertex-ai-oauth"
+
+[dependencies]
+reqwest = { version = "0.12", default-features = false, features = ["json", "stream", "rustls-tls"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+rand = "0.9"
+base64 = "0.22"
+futures = "0.3"
+log = "0.4"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["full"] }
