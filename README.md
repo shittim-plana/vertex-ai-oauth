@@ -35,20 +35,28 @@ This library uses **Google Identity Services (GIS)** to authenticate the end-use
 - **Node.js support**: inject any token source via `getToken` callback (ADC, service account, etc.)
 - **Gemini 3 thinking models**: automatic `thinkingConfig` injection (excludes gemini-3.1)
 - **Universal module**: works as browser `<script>` tag or CommonJS `require()`
+- **Rust crate**: PKCE flow for native apps (Android, desktop, CLI) — no `client_secret` needed
 
 ---
 
 ## Files
 
-| File | Description |
-|---|---|
-| `lib/vertex-ai-oauth.js` | Universal — browser + Node.js. Supports `getToken`, `refreshToken`, custom storage. |
-| `lib/vertex-ai-oauth.browser.js` | Browser-only lightweight version. GIS + localStorage only. |
-| `lib/vertex-ai-oauth-server.js` | Server-only. Authorization Code Flow, token refresh/revoke, GCP project listing. |
-| `lib/vertex-ai-oauth-postgresql.js` | Server-only. PostgreSQL token storage with auto-refresh. For Next.js/Express backends. |
+### Browser & Server (JavaScript)
 
-Use `vertex-ai-oauth.browser.js` for plain HTML pages.
-Use `vertex-ai-oauth.js` for bundled apps or Node.js.
+| File | Environment | Description |
+|---|---|---|
+| `lib/vertex-ai-oauth.browser.js` | Browser | GIS popup + localStorage. Lightweight, no bundler needed. |
+| `lib/vertex-ai-oauth.js` | Browser + Node.js | Universal. Supports `getToken` callback, `refreshToken`, custom storage. |
+| `lib/vertex-ai-oauth-server.js` | Server | Authorization Code Flow, token refresh/revoke, GCP project listing. |
+| `lib/vertex-ai-oauth-postgresql.js` | Server | PostgreSQL token storage with auto-refresh. For Next.js/Express backends. |
+
+### Native App (Rust)
+
+| Crate | Environment | Description |
+|---|---|---|
+| `rust/` | Android / Desktop / CLI | OAuth 2.0 **PKCE** flow — no `client_secret` needed. Token exchange, auto-refresh, revoke, SSE streaming, model listing. |
+
+Native apps (mobile, desktop) are **public clients** that cannot safely store a `client_secret`. The Rust crate uses PKCE (Proof Key for Code Exchange) instead, which is the recommended OAuth flow for this class of application. The JavaScript implementations do not include PKCE.
 
 ---
 
@@ -235,20 +243,28 @@ Agent Platform(구 Vertex AI)용 OAuth 2.0 유틸리티 — **서비스 계정 �
 - **Node.js 지원**: `getToken` 콜백으로 ADC, 서비스 계정 등 연동 가능
 - **Gemini 3 thinking 모델**: `thinkingConfig` 자동 주입 (gemini-3.1 제외)
 - **유니버설 모듈**: 브라우저 `<script>` 태그 및 CommonJS `require()` 모두 지원
+- **Rust crate**: 네이티브 앱(Android, 데스크톱, CLI)용 PKCE 흐름 — `client_secret` 불필요
 
 ---
 
 ## 파일 구성
 
-| 파일 | 설명 |
-|---|---|
-| `lib/vertex-ai-oauth.js` | 유니버설 — 브라우저 + Node.js. `getToken`, `refreshToken`, 커스텀 스토리지 지원. |
-| `lib/vertex-ai-oauth.browser.js` | 브라우저 전용 경량 버전. GIS + localStorage만 사용. |
-| `lib/vertex-ai-oauth-server.js` | 서버 전용. Authorization Code Flow, 토큰 갱신/폐기, GCP 프로젝트 목록 조회. |
-| `lib/vertex-ai-oauth-postgresql.js` | 서버 전용. PostgreSQL 토큰 저장 + 자동 갱신. Next.js/Express 백엔드용. |
+### 브라우저 & 서버 (JavaScript)
 
-순수 HTML 페이지에는 `vertex-ai-oauth.browser.js`를 사용하세요.
-번들 앱이나 Node.js 환경에는 `vertex-ai-oauth.js`를 사용하세요.
+| 파일 | 환경 | 설명 |
+|---|---|---|
+| `lib/vertex-ai-oauth.browser.js` | 브라우저 | GIS 팝업 + localStorage. 경량, 번들러 불필요. |
+| `lib/vertex-ai-oauth.js` | 브라우저 + Node.js | 유니버설. `getToken` 콜백, `refreshToken`, 커스텀 스토리지 지원. |
+| `lib/vertex-ai-oauth-server.js` | 서버 | Authorization Code Flow, 토큰 갱신/폐기, GCP 프로젝트 목록 조회. |
+| `lib/vertex-ai-oauth-postgresql.js` | 서버 | PostgreSQL 토큰 저장 + 자동 갱신. Next.js/Express 백엔드용. |
+
+### 네이티브 앱 (Rust)
+
+| Crate | 환경 | 설명 |
+|---|---|---|
+| `rust/` | Android / Desktop / CLI | OAuth 2.0 **PKCE** 흐름 — `client_secret` 불필요. 토큰 교환, 자동 갱신, 폐기, SSE 스트리밍, 모델 목록. |
+
+네이티브 앱(모바일, 데스크톱)은 `client_secret`을 안전하게 보관할 수 없는 **public client**입니다. Rust crate는 이런 환경을 위해 PKCE(Proof Key for Code Exchange)를 사용합니다. JavaScript 구현에는 PKCE가 포함되어 있지 않습니다.
 
 ---
 
