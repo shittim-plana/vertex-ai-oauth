@@ -46,28 +46,51 @@ footer.foot{padding:1.8rem 0;border-top:1px solid var(--border);text-align:cente
 <p>When a user signs in through this OAuth client, the following Google user data is involved:</p>
 <p><strong>cloud-platform scope:</strong> Grants the user's own browser or application the ability to call Vertex AI APIs under the user's own GCP project. This is the minimum scope required by Google's Vertex AI API.</p>
 <p><strong>cloudplatformprojects.readonly scope:</strong> Allows the user's own browser or application to list the user's GCP projects (name and ID) so they can select which project to use.</p>
-<p>All data accessed through these scopes flows <strong>directly between the user and Google</strong>. This project does not sit in the middle of that communication.</p>
+<p>The user's email address is received as part of the standard OAuth 2.0 sign-in flow, used solely to identify the authenticated session within the user's own application.</p>
+</section>
+
+<section>
+<h2>How Google User Data Is Used</h2>
+<p>Google user data accessed through this OAuth client is used for the following purposes and no others:</p>
+<p><strong>Email address:</strong> Displayed within the user's own application to confirm which Google account is currently signed in. Not transmitted to any external server.</p>
+<p><strong>GCP project list</strong> (via cloudplatformprojects.readonly): Presented to the user within their own application so they can select which GCP project to bill Vertex AI API usage to. The project list is retrieved from Google's Resource Manager API and displayed locally; it is not stored persistently or transmitted elsewhere.</p>
+<p><strong>Vertex AI API access</strong> (via cloud-platform): Used to send the user's input (such as text prompts) to Google's Vertex AI endpoints and receive generated responses. All API communication occurs directly between the user's device and Google's servers. The content of prompts and responses is never seen by, transmitted to, or stored by this project.</p>
+<p>Google user data is not used for advertising, analytics, profiling, market research, AI/ML model training, or any purpose unrelated to the functionality described above.</p>
 </section>
 
 <section>
 <h2>What We Can and Cannot See</h2>
-<p><strong>What we can see:</strong> Aggregate OAuth traffic statistics available in the Google Cloud Console, such as the number of consent grants. This is standard for any OAuth client registration.</p>
-<p><strong>What we cannot see:</strong> Any individual user's email address, GCP project list, API requests, API responses, or any other Google user data. All such data flows directly between the user's device and Google's servers. This project has no server, no database, and no infrastructure that processes or stores user data.</p>
+<p><strong>What we can see:</strong> Aggregate OAuth traffic statistics available in the Google Cloud Console, such as the total number of consent grants. This is standard for any OAuth client registration and contains no individual user data.</p>
+<p><strong>What we cannot see:</strong> Any individual user's email address, GCP project list, API requests, API responses, or any other Google user data. All such data flows directly between the user's device and Google's servers without passing through any infrastructure operated by this project.</p>
+</section>
+
+<section>
+<h2>Data Protection</h2>
+<p>The following security mechanisms protect Google user data throughout the OAuth flow and subsequent API usage:</p>
+<p><strong>Transport encryption:</strong> All communication between the user's device and Google (OAuth endpoints, Vertex AI API) occurs exclusively over HTTPS/TLS. The library enforces HTTPS for all Google API requests.</p>
+<p><strong>OAuth 2.0 token security:</strong> Access tokens are short-lived (typically 1 hour) and automatically refreshed, minimizing the window of exposure. Refresh tokens are stored only on the user's side and are never transmitted to any third party.</p>
+<p><strong>PKCE (Proof Key for Code Exchange):</strong> The Rust implementation for native applications (Android, desktop) uses PKCE, which prevents authorization code interception attacks. No client secret is embedded in native applications.</p>
+<p><strong>Browser same-origin policy:</strong> In browser environments, OAuth tokens stored in localStorage are protected by the browser's same-origin policy, preventing access from other domains.</p>
+<p><strong>No server-side storage:</strong> This project operates no server, database, or backend infrastructure. Google user data exists only on the user's own device or in the user's own infrastructure, meaning there is no centralized data store that could be breached.</p>
+<p><strong>Scope minimization:</strong> The OAuth client requests only the scopes strictly required for Vertex AI access. No additional Google user data (such as contacts, files, or calendar) is requested or accessible.</p>
 </section>
 
 <section>
 <h2>Data Sharing</h2>
-<p>Google user data is not shared with any third party, because this project never receives it in the first place. The only parties involved in the data flow are the user and Google.</p>
+<p>Google user data is not shared with any third party. This project never receives Google user data, so there is no data to share. The only data exchange occurs directly between the user's device and Google's servers.</p>
 </section>
 
 <section>
 <h2>Data Storage</h2>
-<p>This project does not store any Google user data. OAuth credentials (tokens) that enable the connection are stored solely on the user's side: in their browser, in their own application, or in their own database, depending on how they use the library. This project operates no server or database.</p>
+<p>This project does not store any Google user data. OAuth credentials that enable the user's connection are stored solely on the user's side: in their browser's localStorage, in their own application memory, or in their own database (such as PostgreSQL), depending on how the library is integrated. The choice of storage and its security configuration are under the user's or integrating developer's control.</p>
 </section>
 
 <section>
 <h2>Data Retention and Deletion</h2>
-<p>Since this project holds no user data, there is nothing to retain or delete on our end. Users who wish to remove their OAuth credentials can do so in their own environment (e.g., clearing browser storage or deleting database records). Users can also revoke this OAuth client's access at any time via <a href="https://myaccount.google.com/permissions">Google Account Permissions</a>.</p>
+<p>Since this project holds no user data, there is nothing to retain or delete on our end. Users control their own data:</p>
+<p><strong>Browser:</strong> Clear the application's localStorage or use the host application's sign-out function.</p>
+<p><strong>Server/database integrations:</strong> Delete token records from the user's own database.</p>
+<p><strong>Google Account:</strong> Revoke this OAuth client's access at any time via <a href="https://myaccount.google.com/permissions">Google Account Permissions</a>, which immediately invalidates all issued tokens.</p>
 </section>
 
 <section>
@@ -91,7 +114,7 @@ footer.foot{padding:1.8rem 0;border-top:1px solid var(--border);text-align:cente
 </section>
 
 </main>
-<footer class="foot">Last updated: 2026-07-10</footer>
+<footer class="foot">Last updated: 2026-07-11</footer>
 </div>
 </body>
 </html>
