@@ -37,28 +37,47 @@ footer.foot{padding:1.8rem 0;border-top:1px solid var(--border);text-align:cente
 <h1>Privacy Policy</h1>
 
 <section>
-<h2>Overview</h2>
-<p>pisces-ai-oauth is an open-source OAuth 2.0 utility library for Google Agent Platform (formerly Vertex AI). This website is a static informational page for the library.</p>
+<h2>What This Project Does</h2>
+<p>pisces-ai-oauth provides a verified OAuth 2.0 client that allows users to access Google Agent Platform (Vertex AI) large language models using their own Google account and their own GCP project. Setting up OAuth verification for Vertex AI scopes is a complex process; this project handles that on behalf of users so they can connect without managing service account keys.</p>
 </section>
 
 <section>
-<h2>Data Collection</h2>
-<p>This website collects no personal data: no analytics, no cookies, no tracking, and no server-side logging under our control. The library itself runs entirely in the user's own environment.</p>
+<h2>Google User Data Accessed</h2>
+<p>When a user signs in through this OAuth client, the following Google user data is involved:</p>
+<p><strong>cloud-platform scope:</strong> Grants the user's own browser or application the ability to call Vertex AI APIs under the user's own GCP project. This is the minimum scope required by Google's Vertex AI API.</p>
+<p><strong>cloudplatformprojects.readonly scope:</strong> Allows the user's own browser or application to list the user's GCP projects (name and ID) so they can select which project to use.</p>
+<p>All data accessed through these scopes flows <strong>directly between the user and Google</strong>. This project does not sit in the middle of that communication.</p>
 </section>
 
 <section>
-<h2>OAuth Tokens</h2>
-<p>When the library is used, Google OAuth tokens are stored only on the user's side: in the browser's localStorage (browser build) or in the user's own PostgreSQL database (server build). Tokens are never transmitted to, or stored on, any server operated by this project.</p>
+<h2>What We Can and Cannot See</h2>
+<p><strong>What we can see:</strong> Aggregate OAuth traffic statistics available in the Google Cloud Console, such as the number of consent grants. This is standard for any OAuth client registration.</p>
+<p><strong>What we cannot see:</strong> Any individual user's email address, GCP project list, API requests, API responses, or any other Google user data. All such data flows directly between the user's device and Google's servers. This project has no server, no database, and no infrastructure that processes or stores user data.</p>
+</section>
+
+<section>
+<h2>Data Sharing</h2>
+<p>Google user data is not shared with any third party, because this project never receives it in the first place. The only parties involved in the data flow are the user and Google.</p>
+</section>
+
+<section>
+<h2>Data Storage</h2>
+<p>This project does not store any Google user data. OAuth credentials (tokens) that enable the connection are stored solely on the user's side: in their browser, in their own application, or in their own database, depending on how they use the library. This project operates no server or database.</p>
+</section>
+
+<section>
+<h2>Data Retention and Deletion</h2>
+<p>Since this project holds no user data, there is nothing to retain or delete on our end. Users who wish to remove their OAuth credentials can do so in their own environment (e.g., clearing browser storage or deleting database records). Users can also revoke this OAuth client's access at any time via <a href="https://myaccount.google.com/permissions">Google Account Permissions</a>.</p>
 </section>
 
 <section>
 <h2>Google Sign-In</h2>
-<p>Authentication is performed directly between the user and Google via Google Identity Services. Google's handling of data is governed by <a href="https://policies.google.com/privacy">Google's Privacy Policy</a>.</p>
+<p>Authentication is performed directly between the user and Google via Google Identity Services. Google's handling of user data during sign-in is governed by <a href="https://policies.google.com/privacy">Google's Privacy Policy</a>.</p>
 </section>
 
 <section>
-<h2>Third-Party Hosting</h2>
-<p>This site is hosted on Vercel; Vercel may collect standard access logs per its own privacy policy.</p>
+<h2>This Website</h2>
+<p>This website (pisces-ai-oauth.layream.dev) is a static informational page. It contains no analytics, cookies, or tracking scripts. It is hosted on Vercel, which may collect standard access logs per its own privacy policy.</p>
 </section>
 
 <section>
@@ -68,10 +87,11 @@ footer.foot{padding:1.8rem 0;border-top:1px solid var(--border);text-align:cente
 
 <section>
 <h2>Contact</h2>
-<p>Questions can be raised via <a href="https://github.com/shittim-plana/vertex-ai-oauth/issues">GitHub Issues</a>.</p>
+<p>Questions about this privacy policy can be raised via <a href="https://github.com/shittim-plana/vertex-ai-oauth/issues">GitHub Issues</a>.</p>
 </section>
+
 </main>
-<footer class="foot">Last updated: 2026-06-12</footer>
+<footer class="foot">Last updated: 2026-07-10</footer>
 </div>
 </body>
 </html>
